@@ -2,6 +2,7 @@ package com.mprog.dao;
 
 import com.mprog.entity.Author;
 import com.mprog.util.ConnectionManager;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
@@ -11,7 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 public class AuthorDao implements Dao<Long, Author> {
+
+    private static final AuthorDao INSTANCE = new AuthorDao();
+
+    private AuthorDao(){
+    }
 
     private static final String FIND_ALL = """
             SELECT id, first_name, last_name, year_of_birth
@@ -61,5 +68,9 @@ public class AuthorDao implements Dao<Long, Author> {
                 resultSet.getObject("last_name", String.class),
                 resultSet.getObject("year_of_birth", Integer.class)
         );
+    }
+
+    public static AuthorDao getInstance() {
+        return INSTANCE;
     }
 }
