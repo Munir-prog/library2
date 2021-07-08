@@ -1,5 +1,4 @@
 package com.mprog.entity;
-
 import lombok.*;
 
 @AllArgsConstructor

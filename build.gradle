@@ -3,7 +3,7 @@ plugins {
     id 'war'
 }
 
-group 'org.example'
+group 'com.mprog'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -14,9 +14,6 @@ dependencies {
     testImplementation 'junit:junit:4.11'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-
-//    implementation files('/home/munir/work/apache-tomcat-10.0.5/lib/servlet-api.jar')
-//    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     //tomcat
     implementation group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '10.1.0-M2'
 
@@ -24,8 +21,8 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
 
     //lombok
-    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
-
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
 test {

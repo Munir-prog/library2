@@ -1,5 +1,4 @@
 package com.mprog.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,3 +12,4 @@ public class AuthorDto {
     private final Long id;
     private final String fullName;
 }
+
