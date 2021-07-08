@@ -13,9 +13,6 @@ public final class ConnectionManager {
     private ConnectionManager() {
     }
 
-    static {
-
-    }
 
     public static Connection get(){
         try {
