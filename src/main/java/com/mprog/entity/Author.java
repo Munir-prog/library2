@@ -1,4 +1,4 @@
-package com.mprog.servlet.entity;
+package com.mprog.entity;
 
 public class Author {
     private long id;

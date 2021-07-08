@@ -1,4 +1,4 @@
-package com.mprog.servlet.util;
+package com.mprog.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
