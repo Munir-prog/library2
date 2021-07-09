@@ -1,6 +1,6 @@
 package com.mprog.servlet;
 
-import com.mprog.service.AuthorService;
+import com.mprog.service.BookService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,25 +11,30 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-@WebServlet("/authors")
-public class AuthorServlet extends HttpServlet {
-    private static final AuthorService authorService = AuthorService.getInstance();
+@WebServlet("/books")
+public class BookServlet extends HttpServlet {
+
+    private final BookService bookService = BookService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var bookId = Long.valueOf(req.getParameter("bookId"));
+        var fullName = req.getParameter("fullName");
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
+
         try (var writer = resp.getWriter()) {
-            writer.write("<h1>List of Authors</h1>");
+            writer.write("<h1>" + fullName +  " books<h1>");
             writer.write("<ul>");
-            authorService.findAll().forEach(authorDto -> {
-                writer.write("""
+            bookService.findAllByAuthorId(bookId).forEach(bookDto -> writer.write("""
                     <li>
-                        <a href="/books?bookId=%d&fullName=%s" >%s</a>
+                    %s
+                    %s
+                    Publishing id: %d
                     </li>
-                    """.formatted(authorDto.getId(), authorDto.getFullName(), authorDto.getFullName()));
-            });
+                    **********************
+                    """.formatted(bookDto.getBookName(), bookDto.getBookDescription(), bookDto.getPublishingId())));
             writer.write("</ul>");
         }
     }
