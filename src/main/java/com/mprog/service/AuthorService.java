@@ -24,7 +24,7 @@ public class AuthorService {
                         author.getId(),
                         """
                                 %s - %s
-                                """.formatted(author.getLastName(), author.getFirstName())
+                                """.formatted(author.getFirstName(), author.getLastName())
                 ))
                 .collect(toList());
     }
