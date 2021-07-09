@@ -1,17 +1,13 @@
 package com.mprog.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@AllArgsConstructor
-@Getter
-@EqualsAndHashCode
-@ToString
+
+@Value
+@Builder
 public class BookDto {
-    private final long id;
-    private final String bookName;
-    private final String bookDescription;
-    private final int publishingId;
+    long id;
+    String bookName;
+    String bookDescription;
+    int publishingId;
 }

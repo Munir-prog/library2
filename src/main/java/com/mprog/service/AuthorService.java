@@ -17,16 +17,18 @@ public class AuthorService {
 
     private static final AuthorDao authorDao = AuthorDao.getInstance();
 
-    public List<AuthorDto> findAll(){
+    public List<AuthorDto> findAll() {
         return authorDao.findAll()
                 .stream()
-                .map(author -> new AuthorDto(
-                        author.getId(),
-                        """
-                                %s - %s
-                                """.formatted(author.getFirstName(), author.getLastName())
-                ))
-                .collect(toList());
+                .map(author -> AuthorDto.builder()
+                        .id(author.getId())
+                        .fullName(
+                                """
+                                        %s - %s
+                                        """.formatted(author.getFirstName(), author.getLastName())
+                        )
+                        .build())
+                        .collect(toList());
     }
 
     public static AuthorService getInstance() {

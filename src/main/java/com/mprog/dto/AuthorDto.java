@@ -1,15 +1,10 @@
 package com.mprog.dto;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@AllArgsConstructor
-@Getter
-@EqualsAndHashCode
-@ToString
+@Value
+@Builder
 public class AuthorDto {
-    private final Long id;
-    private final String fullName;
+    Long id;
+    String fullName;
 }
 
