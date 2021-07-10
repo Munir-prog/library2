@@ -1,5 +1,6 @@
 package com.mprog.servlet;
 
+import com.mprog.dto.AuthorDto;
 import com.mprog.service.AuthorService;
 import com.mprog.util.JspHelper;
 import jakarta.servlet.ServletException;
@@ -9,20 +10,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@WebServlet("/authors")
-public class AuthorServlet extends HttpServlet {
+@WebServlet("/content")
+public class ContentServlet extends HttpServlet {
+
     private static final AuthorService authorService = AuthorService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("authors", authorService.findAll());
+        var authorDto = authorService.findAll();
+        req.setAttribute("authors", authorDto);
+        req.getSession().setAttribute("authorsMap", authorDto.stream()
+                .collect(Collectors.toMap(AuthorDto::getId, AuthorDto::getFullName)));
 
-        req.getRequestDispatcher(JspHelper.getPath("authors"))
+
+        req.getRequestDispatcher(JspHelper.getPath("content"))
                 .forward(req, resp);
-
-
     }
 }
