@@ -1,6 +1,5 @@
 package com.mprog.servlet;
 
-import com.mprog.service.AuthorService;
 import com.mprog.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,22 +8,24 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/authors")
-public class AuthorServlet extends HttpServlet {
-    private static final AuthorService authorService = AuthorService.getInstance();
+@WebServlet("/registration")
+public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("authors", authorService.findAll());
+        req.setAttribute("roles", List.of("USER", "ADMIN"));
+        req.setAttribute("gender", List.of("MALE", "FEMALE"));
 
-        req.getRequestDispatcher(JspHelper.getPath("authors"))
+        req.getRequestDispatcher(JspHelper.getPath("registration"))
                 .forward(req, resp);
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var name = req.getParameter("name");
 
     }
 }
