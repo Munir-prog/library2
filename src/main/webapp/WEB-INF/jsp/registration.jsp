@@ -32,17 +32,24 @@
 
     <select name="role" id="roleId">
         <c:forEach var="role" items="${requestScope.roles}">
-            <option value="${role}">${role}</ option>
+            <option value="${role}">${role}</
+            option>
         </c:forEach>
 
     </select><br>
-        <c:forEach var="gender" items="${requestScope.gender}">
-            <input type="radio" name="gender" value="${gender}"> Male
-            <br>
-        </c:forEach>
+    <c:forEach var="gender" items="${requestScope.gender}">
+        <input type="radio" name="gender" value="${gender}"> Male
+        <br>
+    </c:forEach>
 
     <button type="submit">Send</button>
-
+    <c:if test="${not empty requestScope.errors}">
+        <div style="color: red">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span><br>
+            </c:forEach>
+        </div>
+    </c:if>
 </form>
 </body>
 </html>

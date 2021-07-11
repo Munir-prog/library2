@@ -1,5 +1,10 @@
 package com.mprog.servlet;
 
+import com.mprog.dto.CreateUserDto;
+import com.mprog.entity.Gender;
+import com.mprog.entity.Role;
+import com.mprog.exception.ValidationException;
+import com.mprog.service.UserService;
 import com.mprog.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,10 +18,14 @@ import java.util.List;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
+    private final UserService userService = UserService.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("roles", List.of("USER", "ADMIN"));
-        req.setAttribute("gender", List.of("MALE", "FEMALE"));
+//        req.setAttribute("roles", List.of("USER", "ADMIN"));
+        req.setAttribute("roles", Role.values());
+//        req.setAttribute("gender", List.of("MALE", "FEMALE"));
+        req.setAttribute("gender", Gender.values());
 
         req.getRequestDispatcher(JspHelper.getPath("registration"))
                 .forward(req, resp);
@@ -26,6 +35,23 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var name = req.getParameter("name");
+        var createUserDto = CreateUserDto.builder()
+                .name(req.getParameter("name"))
+                .birthday(req.getParameter("birthday"))
+                .email(req.getParameter("email"))
+                .password(req.getParameter("password"))
+                .role(req.getParameter("role"))
+                .gender(req.getParameter("gender"))
+                .build();
+
+
+        try {
+            userService.create(createUserDto);
+            resp.sendRedirect("/login");
+        } catch (ValidationException e){
+            req.setAttribute("errors", e.getErrorList());
+            doGet(req, resp);
+        }
 
     }
 }
