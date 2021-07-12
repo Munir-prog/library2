@@ -10,12 +10,14 @@ import java.time.LocalDate;
 
 public class CreateUserMapper implements Mapper<CreateUserDto, User>{
 
+    private static final String IMAGE_FOLDER = "users/";
     private static final CreateUserMapper INSTANCE = new CreateUserMapper();
 
     @Override
     public User mapFrom(CreateUserDto obj) {
         return User.builder()
                 .name(obj.getName())
+                .image(IMAGE_FOLDER + obj.getImage().getSubmittedFileName())
                 .birthday(LocalDateFormatter.format(obj.getBirthday()))
                 .email(obj.getEmail())
                 .password(obj.getPassword())

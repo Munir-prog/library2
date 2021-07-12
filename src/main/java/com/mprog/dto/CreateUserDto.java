@@ -1,5 +1,6 @@
 package com.mprog.dto;
 
+import jakarta.servlet.http.Part;
 import lombok.Builder;
 import lombok.Value;
 
@@ -12,4 +13,5 @@ public class CreateUserDto {
     String password;
     String role;
     String gender;
+    Part image;
 }

@@ -9,6 +9,7 @@ import com.mprog.validator.CreateUserValidator;
 import com.mprog.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserService {
@@ -16,13 +17,17 @@ public class UserService {
     private final CreateUserValidator createUserValidator = CreateUserValidator.getInstance();
     private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
     private final UserDao userDao = UserDao.getInstance();
+    private final ImageService imageService = ImageService.getInstance();
 
+
+    @SneakyThrows
     public Integer create(CreateUserDto createUserDto){
         var validationResult = createUserValidator.isValid(createUserDto);
         if (!validationResult.isValid()){
             throw new ValidationException(validationResult.getErrors());
         }
         var userEntity = createUserMapper.mapFrom(createUserDto);
+        imageService.upload(userEntity.getImage(), createUserDto.getImage().getInputStream());
         var save = userDao.save(userEntity);
         return save.getId();
     }
