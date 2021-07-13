@@ -23,6 +23,12 @@ public class BookDao implements Dao<Long, Book> {
                      JOIN authors a on a.id = ba.author_id
             WHERE a.id = ?
             """;
+    private static final String FIND_ALL_SQL = """
+            SELECT  b.id, book_name, page_count, chapter_count, year_of_release, publishing_id
+            FROM books b
+                     JOIN books_authors ba on b.id = ba.book_id
+                     JOIN authors a on a.id = ba.author_id
+            """;
 
 
     @SneakyThrows
@@ -33,7 +39,7 @@ public class BookDao implements Dao<Long, Book> {
             var resultSet = preparedStatement.executeQuery();
 
             List<Book> bookList = new ArrayList<>();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 bookList.add(bookBuilder(resultSet));
             }
 
@@ -42,20 +48,18 @@ public class BookDao implements Dao<Long, Book> {
     }
 
     @SneakyThrows
-    private Book bookBuilder(ResultSet resultSet) {
-        return new Book(
-                resultSet.getObject("id", Long.class),
-                resultSet.getObject("book_name", String.class),
-                resultSet.getObject("page_count", Integer.class),
-                resultSet.getObject("chapter_count", Integer.class),
-                resultSet.getObject("year_of_release", Integer.class),
-                resultSet.getObject("publishing_id", Integer.class)
-        );
-    }
-
     @Override
     public List<Book> findAll() {
-        return null;
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
+            var resultSet = preparedStatement.executeQuery();
+            List<Book> bookList = new ArrayList<>();
+
+            while (resultSet.next()){
+                bookList.add(bookBuilder(resultSet));
+            }
+            return bookList;
+        }
     }
 
     @Override
@@ -80,5 +84,17 @@ public class BookDao implements Dao<Long, Book> {
 
     public static BookDao getInstance() {
         return INSTANCE;
+    }
+
+    @SneakyThrows
+    private Book bookBuilder(ResultSet resultSet) {
+        return new Book(
+                resultSet.getObject("id", Long.class),
+                resultSet.getObject("book_name", String.class),
+                resultSet.getObject("page_count", Integer.class),
+                resultSet.getObject("chapter_count", Integer.class),
+                resultSet.getObject("year_of_release", Integer.class),
+                resultSet.getObject("publishing_id", Integer.class)
+        );
     }
 }

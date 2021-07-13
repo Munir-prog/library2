@@ -14,10 +14,20 @@
         <%@include file="/css/style.css" %>
     </style>
 </head>
-<body>
-    <div>
-        <img src="${pageContext.request.contextPath}/images/users/42.jpg" alt="User image">
+<body >
+<div class="content">
+    <div class="profileContent">
+        <img src="${pageContext.request.contextPath}/images/${sessionScope.user.image}" alt="User image" class="imgFace">
+        <span>Name: ${sessionScope.user.name}</span>
+        <span>Email: ${sessionScope.user.email}</span>
+        <span>Birthday: ${sessionScope.user.birthday}</span>
     </div>
+    <div class="libContent">
+        <a href="${pageContext.request.contextPath}/authors">Authors</a>
+        <a href="${pageContext.request.contextPath}/books">Books</a>
+
+    </div>
+</div>
 
 <%@include file="footer.jsp"%>
 </body>

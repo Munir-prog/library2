@@ -7,10 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static com.mprog.util.UrlPath.BOOKS;
 
@@ -21,31 +21,31 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var bookId = Long.valueOf(req.getParameter("bookId"));
+        Optional.ofNullable(req.getParameter("bookId"))
+                .ifPresentOrElse(
+                        bookId -> findPartly(Long.valueOf(bookId), req, resp),
+                        () -> findAll(req, resp)
+                );
+
+
+    }
+
+    @SneakyThrows
+    private void findAll(HttpServletRequest req, HttpServletResponse resp) {
+        req.setAttribute("books", bookService.findAll());
+        forward(req, resp);
+    }
+
+    @SneakyThrows
+    private void findPartly(Long bookId, HttpServletRequest req, HttpServletResponse resp) {
         var fullName = req.getParameter("fullName");
         req.setAttribute("books", bookService.findAllByAuthorId(bookId));
+        forward(req, resp);
+    }
 
+    @SneakyThrows
+    private void forward(HttpServletRequest req, HttpServletResponse resp) {
         req.getRequestDispatcher(JspHelper.getPath("books"))
                 .forward(req, resp);
-
-        //        req.setAttribute("full-name", fullName);
-
-        //        resp.setContentType("text/html");
-//        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-
-//
-//        try (var writer = resp.getWriter()) {
-//            writer.write("<h1>" + fullName +  " books<h1>");
-//            writer.write("<ul>");
-//            bookService.findAllByAuthorId(bookId).forEach(bookDto -> writer.write("""
-//                    <li>
-//                    %s
-//                    %s
-//                    Publishing id: %d
-//                    </li>
-//                    **********************
-//                    """.formatted(bookDto.getBookName(), bookDto.getBookDescription(), bookDto.getPublishingId())));
-//            writer.write("</ul>");
-//        }
     }
 }

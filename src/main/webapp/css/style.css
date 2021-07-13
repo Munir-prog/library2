@@ -53,7 +53,39 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
+.imgFace {
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+}
+.content {
+    display: flex;
+    justify-content: space-around;
+}
+.profileContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid #111111;
+    height: 50%; /*TODO not working*/
+    width: 25%;
+}
 
+.libContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid #111111;
+    height: 50%;
+    width: 25%;
+}
+
+.libContent > a {
+    color: red;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
 .d22 {
     width: 0;
     height: 0;

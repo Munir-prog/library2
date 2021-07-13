@@ -6,7 +6,18 @@
 </head>
 <body>
 <%@include file="header.jsp"%>
-<h1>${param.fullName} books:</h1>
+
+<c:choose>
+    <c:when test="${not empty param.fullName}">
+        <h1>${param.fullName}'s books:</h1>
+        <br />
+    </c:when>
+    <c:otherwise>
+        <h1>All books:</h1>
+        <br />
+    </c:otherwise>
+</c:choose>
+
 <c:if test="${not empty requestScope.books}">
     <ul>
         <c:forEach var="book" items="${requestScope.books}">
