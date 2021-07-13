@@ -1,4 +1,4 @@
-package com.mprog.servlet;
+package com.mprog.learn.servlets;
 
 import com.mprog.dto.AuthorDto;
 import com.mprog.service.AuthorService;

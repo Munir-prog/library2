@@ -1,4 +1,4 @@
-package com.mprog.servlet;
+package com.mprog.learn.servlets;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -2,14 +2,18 @@ package com.mprog.service;
 
 import com.mprog.dao.UserDao;
 import com.mprog.dto.CreateUserDto;
+import com.mprog.dto.UserDto;
 import com.mprog.entity.User;
 import com.mprog.exception.ValidationException;
 import com.mprog.mapper.CreateUserMapper;
+import com.mprog.mapper.UserMapper;
 import com.mprog.validator.CreateUserValidator;
 import com.mprog.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserService {
@@ -18,6 +22,7 @@ public class UserService {
     private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
     private final UserDao userDao = UserDao.getInstance();
     private final ImageService imageService = ImageService.getInstance();
+    private final UserMapper userMapper = UserMapper.getInstance();
 
 
     @SneakyThrows
@@ -30,6 +35,12 @@ public class UserService {
         imageService.upload(userEntity.getImage(), createUserDto.getImage().getInputStream());
         var save = userDao.save(userEntity);
         return save.getId();
+    }
+
+    public Optional<UserDto> login(String email, String password){
+        return userDao.findByLoginAndPassword(email, password)
+                .map(userMapper::mapFrom);
+
     }
 
     public static UserService getInstance() {

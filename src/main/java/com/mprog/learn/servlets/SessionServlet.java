@@ -1,4 +1,4 @@
-package com.mprog.servlet;
+package com.mprog.learn.servlets;
 
 import com.mprog.dto.CreateUserDto;
 import jakarta.servlet.ServletException;

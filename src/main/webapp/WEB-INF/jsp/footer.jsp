@@ -7,4 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<h1>Footer Низ</h1>
+<div class="footer" >
+    <a href="${pageContext.request.contextPath}/main">MAIN PAGE</a>
+</div>

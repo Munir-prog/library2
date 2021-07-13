@@ -10,7 +10,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Registration</title>
+    <style>
+        <%@include file="/css/style.css" %>
+    </style>
 </head>
 <body>
 <form action="/registration" method="post" enctype="multipart/form-data">
@@ -54,5 +57,7 @@
         </div>
     </c:if>
 </form>
+<%@include file="footer.jsp"%>
+
 </body>
 </html>

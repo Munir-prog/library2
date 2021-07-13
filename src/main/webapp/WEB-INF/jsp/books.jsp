@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<%@include file="header.jsp"%>
 <h1>${param.fullName} books:</h1>
 <c:if test="${not empty requestScope.books}">
     <ul>

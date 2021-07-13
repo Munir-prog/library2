@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-@WebServlet("/books")
+import static com.mprog.util.UrlPath.BOOKS;
+
+@WebServlet(BOOKS)
 public class BookServlet extends HttpServlet {
 
     private final BookService bookService = BookService.getInstance();
