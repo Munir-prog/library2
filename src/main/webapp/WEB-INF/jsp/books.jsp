@@ -3,9 +3,12 @@
 <html>
 <head>
     <title>Title</title>
+    <style>
+        <%@include file="/css/style.css" %>
+    </style>
+
 </head>
 <body>
-<%@include file="header.jsp"%>
 
 <c:choose>
     <c:when test="${not empty param.fullName}">
@@ -26,6 +29,7 @@
         </c:forEach>
     </ul>
 </c:if>
+<%@include file="footer.jsp"%>
 
 </body>
 </html>

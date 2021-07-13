@@ -3,9 +3,11 @@
 <html>
 <head>
     <title>Authors</title>
+    <style>
+        <%@include file="/css/style.css" %>
+    </style>
 </head>
 <body>
-<%@include file="header.jsp"%>
 
 <h1>List of Authors</h1>
 <ul>
@@ -18,5 +20,8 @@
         </li>
     </c:forEach>
 </ul>
+
+<%@include file="footer.jsp"%>
+
 </body>
 </html>

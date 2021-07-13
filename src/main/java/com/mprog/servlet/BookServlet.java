@@ -32,7 +32,7 @@ public class BookServlet extends HttpServlet {
 
     @SneakyThrows
     private void findAll(HttpServletRequest req, HttpServletResponse resp) {
-        req.setAttribute("books", bookService.findAll());
+        req.setAttribute("books", bookService.findAllWithAuthorName());
         forward(req, resp);
     }
 

@@ -86,6 +86,58 @@ body {
     text-decoration: none;
     text-transform: uppercase;
 }
+
+
+.figure {
+    padding-top: 12%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.footer{
+    /*height: 50px;*/
+    /*border: 1px solid #111111;*/
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 1364px;
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #acb0b0;
+
+}
+
+.logoutButton > form > button {
+    height: 25px;
+    width: 100px;
+    margin-top: 15px;
+    background-color: #d9dbdb;
+    border-radius: 10px;
+    border: 0;
+    font: 17px  "Arial", sans-serif;
+    color: #2f3238;
+    transition-duration: 0.3s;
+}
+
+.logoutButton > form > button:hover{
+    background-color: #2f3238;
+    color: #d9dbdb;
+}
+
+.footer > a {
+    color: #2f3238;
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+.footer > a:hover{
+    font-size: 16px;
+}
+
+
+
 .d22 {
     width: 0;
     height: 0;
@@ -159,36 +211,4 @@ body {
     left: 50%;
     background: black;
     border: 19px solid white;
-}
-
-
-.figure {
-    padding-top: 12%;
-    display: flex;
-    justify-content: space-around;
-}
-
-.footer{
-    /*height: 50px;*/
-    /*border: 1px solid #111111;*/
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 1364px;
-    height: 30px;
-    display: flex;
-    justify-content: space-around;
-    padding-top: 17px;
-    background-color: #acb0b0;
-
-}
-
-.footer > a {
-    color: #2f3238;
-    text-decoration: none;
-    transition-duration: 0.3s;
-}
-
-.footer > a:hover{
-    font-size: 16px;
 }

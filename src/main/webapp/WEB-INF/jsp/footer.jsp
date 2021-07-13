@@ -9,4 +9,11 @@
 
 <div class="footer" >
     <a href="${pageContext.request.contextPath}/main">MAIN PAGE</a>
+    <c:if test="${not empty sessionScope.user}">
+        <div class="logoutButton">
+            <form action="${pageContext.request.contextPath}/logout" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </c:if>
 </div>

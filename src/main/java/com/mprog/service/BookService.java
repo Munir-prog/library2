@@ -22,11 +22,27 @@ public class BookService {
                 .collect(toList());
     }
 
-    public List<BookDto> findAll() {
-        return bookDao.findAll()
+    public List<BookDto> findAllWithAuthorName() {
+        return bookDao.findAllWithAuthorName().entrySet()
                 .stream()
-                .map(BookService::buildBookDto)
+                .map(entry -> buildBookDtoWithAuthorName(entry.getKey(), entry.getValue()))
                 .collect(toList());
+    }
+
+    private static BookDto buildBookDtoWithAuthorName(Book book, String fullName) {
+        return BookDto.builder()
+                .id(book.getId())
+                .bookName(book.getBookName())
+                .bookDescription(
+                        """
+                                <br>
+                                Pages:           %s<br>
+                                Chapters:        %s<br>
+                                Year of release: %s<br>
+                                Author:          %s<br>
+                                """.formatted(book.getPageCount(), book.getChapterCount(), book.getYearOfRelease(), fullName))
+                .publishingId(book.getPublishingId())
+                .build();
     }
 
     private static BookDto buildBookDto(Book book) {

@@ -9,9 +9,7 @@ import lombok.SneakyThrows;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookDao implements Dao<Long, Book> {
@@ -24,7 +22,7 @@ public class BookDao implements Dao<Long, Book> {
             WHERE a.id = ?
             """;
     private static final String FIND_ALL_SQL = """
-            SELECT  b.id, book_name, page_count, chapter_count, year_of_release, publishing_id
+            SELECT  b.id, a.first_name, a.last_name, book_name, page_count, chapter_count, year_of_release, publishing_id
             FROM books b
                      JOIN books_authors ba on b.id = ba.book_id
                      JOIN authors a on a.id = ba.author_id
@@ -48,18 +46,22 @@ public class BookDao implements Dao<Long, Book> {
     }
 
     @SneakyThrows
-    @Override
-    public List<Book> findAll() {
+    public Map<Book, String> findAllWithAuthorName() {
         try (var connection = ConnectionManager.get();
              var preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
             var resultSet = preparedStatement.executeQuery();
-            List<Book> bookList = new ArrayList<>();
+            Map<Book, String> bookMap = new HashMap<>();
 
             while (resultSet.next()){
-                bookList.add(bookBuilder(resultSet));
+                bookMap.put(bookBuilder(resultSet), buildFullName(resultSet));
             }
-            return bookList;
+            return bookMap;
         }
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return null;
     }
 
     @Override
@@ -86,6 +88,12 @@ public class BookDao implements Dao<Long, Book> {
         return INSTANCE;
     }
 
+    @SneakyThrows
+    private String buildFullName(ResultSet resultSet){
+        var first_name = resultSet.getObject("first_name", String.class);
+        var last_name = resultSet.getObject("last_name", String.class);
+        return first_name + " " + last_name;
+    }
     @SneakyThrows
     private Book bookBuilder(ResultSet resultSet) {
         return new Book(

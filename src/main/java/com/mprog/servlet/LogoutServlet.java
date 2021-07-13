@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import static com.mprog.util.UrlPath.MAIN;
 
 import java.io.IOException;
 
@@ -16,7 +17,7 @@ public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
 
-        resp.sendRedirect("/login"); // must create start page
+        resp.sendRedirect(MAIN); // must create start page
 
     }
 }
