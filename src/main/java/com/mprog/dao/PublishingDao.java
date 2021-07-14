@@ -24,21 +24,41 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             SELECT id, publishing_name, phone_number, city, country
             FROM publishing
             """;
+    private static final String FIND_ALL_NAME = """
+            SELECT publishing_name
+            FROM publishing
+            """;
+
 
     @SneakyThrows
-    @Override
-    public List<Publishing> findAll() {
+    public List<String> findAllName(){
         try (var connection = ConnectionManager.get();
-             var preparedStatement = connection.prepareStatement(FIND_ALL)) {
+             var preparedStatement = connection.prepareStatement(FIND_ALL_NAME)) {
 
-            List<Publishing> publishingList = new ArrayList<>();
+            List<String> publishingList = new ArrayList<>();
             var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                publishingList.add(buildPublishing(resultSet));
+                publishingList.add(resultSet.getObject("publishing_name", String.class));
             }
 
             return publishingList;
         }
+    }
+    @SneakyThrows
+    @Override
+    public List<Publishing> findAll() {
+//        try (var connection = ConnectionManager.get();
+//             var preparedStatement = connection.prepareStatement(FIND_ALL)) {
+//
+//            List<Publishing> publishingList = new ArrayList<>();
+//            var resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                publishingList.add(buildPublishing(resultSet));
+//            }
+//
+//            return publishingList;
+//        }
+        return null;
     }
 
     @SneakyThrows

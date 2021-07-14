@@ -26,20 +26,17 @@ public class BookServlet extends HttpServlet {
                         bookId -> findPartly(Long.valueOf(bookId), req, resp),
                         () -> findAll(req, resp)
                 );
-
-
     }
 
     @SneakyThrows
     private void findAll(HttpServletRequest req, HttpServletResponse resp) {
-        req.setAttribute("books", bookService.findAllWithAuthorName());
+        req.setAttribute("books", bookService.findAllNameOfBooks());
         forward(req, resp);
     }
 
     @SneakyThrows
     private void findPartly(Long bookId, HttpServletRequest req, HttpServletResponse resp) {
-        var fullName = req.getParameter("fullName");
-        req.setAttribute("books", bookService.findAllByAuthorId(bookId));
+        req.setAttribute("books", bookService.findAllNameOfBooksByAuthorId(bookId));
         forward(req, resp);
     }
 

@@ -24,7 +24,7 @@
 <c:if test="${not empty requestScope.books}">
     <ul>
         <c:forEach var="book" items="${requestScope.books}">
-            <li>${book.bookName}${book.bookDescription}Publishing id: ${book.publishingId}<br>***************</li>
+            <li><a href="${pageContext.request.contextPath}/bookPage?bookName=${book}">${book}</a></li>
             <br>
         </c:forEach>
     </ul>

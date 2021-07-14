@@ -12,6 +12,8 @@ public class Book {
     private String bookName;
     private int pageCount;
     private int chapterCount;
+    private String bookImage;
+    private String bookPart;
     private int yearOfRelease;
     private int publishingId;
 }

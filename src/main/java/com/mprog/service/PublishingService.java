@@ -15,18 +15,24 @@ public class PublishingService {
     private static final PublishingService INSTANCE = new PublishingService();
     private final PublishingDao publishingDao = PublishingDao.getInstance();
 
-    public List<PublishingDto> findAll() {
-        return publishingDao.findAll()
-                .stream()
-                .map(publishing -> PublishingDto.builder()
-                        .id(publishing.getId())
-                        .publishingName(publishing.getPublishingName())
-                        .phoneNumber(publishing.getPhoneNumber())
-                        .location(publishing.getCountry() + ", " + publishing.getCity())
-                        .build()
-                )
-                .collect(toList());
+
+    public List<String> findAllName() {
+        return publishingDao.findAllName();
     }
+
+
+//    public List<PublishingDto> findAll() {
+//        return publishingDao.findAll()
+//                .stream()
+//                .map(publishing -> PublishingDto.builder()
+//                        .id(publishing.getId())
+//                        .publishingName(publishing.getPublishingName())
+//                        .phoneNumber(publishing.getPhoneNumber())
+//                        .location(publishing.getCountry() + ", " + publishing.getCity())
+//                        .build()
+//                )
+//                .collect(toList());
+//    }
 
 
     public static PublishingService getInstance() {

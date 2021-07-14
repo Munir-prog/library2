@@ -8,6 +8,11 @@ import lombok.*;
 public class BookDto {
     long id;
     String bookName;
-    String bookDescription;
+    Integer pageCount;
+    Integer chapterCount;
+    String bookImage;
+    String bookPart;
+    Integer yearOfRelease;
+    String authorFullName;
     int publishingId;
 }

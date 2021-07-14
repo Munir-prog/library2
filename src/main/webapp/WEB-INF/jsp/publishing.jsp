@@ -19,8 +19,8 @@
 <c:if test="${not empty requestScope.publishing}">
 
     <ul>
-        <c:forEach var="publisher" items="${requestScope.publishing}">
-            <li>Id:${publisher.id}<br>Name: ${publisher.publishingName}<br>Phone number: ${publisher.phoneNumber}<br>Location: ${publisher.location}<br><br></li>
+        <c:forEach var="name" items="${requestScope.publishing}">
+            <li>Name: ${name}</li>
         </c:forEach>
     </ul>
 </c:if>
