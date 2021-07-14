@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="footer" >
+<div class="footer">
     <a href="${pageContext.request.contextPath}/main">MAIN PAGE</a>
     <c:if test="${not empty sessionScope.user}">
         <div class="logoutButton">
@@ -16,4 +16,12 @@
             </form>
         </div>
     </c:if>
+    <c:if test="${not empty sessionScope.user}">
+        <div class="goToProfile">
+            <a href="${pageContext.request.contextPath}/profile">
+                <button type="button">My profile</button>
+            </a>
+        </div>
+    </c:if>
+
 </div>

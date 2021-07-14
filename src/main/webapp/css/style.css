@@ -112,7 +112,23 @@ body {
 .logoutButton > form > button {
     height: 25px;
     width: 100px;
+    background-color: #d9dbdb;
+    border-radius: 10px;
+    border: 0;
+    font: 17px  "Arial", sans-serif;
+    color: #2f3238;
+    transition-duration: 0.3s;
     margin-top: 15px;
+}
+
+.logoutButton > form > button:hover{
+    background-color: #2f3238;
+    color: #d9dbdb;
+}
+
+.goToProfile > a > button {
+    height: 25px;
+    width: 100px;
     background-color: #d9dbdb;
     border-radius: 10px;
     border: 0;
@@ -121,7 +137,7 @@ body {
     transition-duration: 0.3s;
 }
 
-.logoutButton > form > button:hover{
+.goToProfile > a > button:hover{
     background-color: #2f3238;
     color: #d9dbdb;
 }

@@ -25,7 +25,8 @@
     <div class="libContent">
         <a href="${pageContext.request.contextPath}/authors">Authors</a>
         <a href="${pageContext.request.contextPath}/books">Books</a>
-
+        <a href="${pageContext.request.contextPath}/publishing">Publishing</a>
+        <a href="${pageContext.request.contextPath}/add">Add book</a>
     </div>
 </div>
 
