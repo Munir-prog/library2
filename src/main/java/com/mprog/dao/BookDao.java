@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -45,7 +46,68 @@ public class BookDao implements Dao<Long, Book> {
                      JOIN authors a on a.id = ba.author_id
             WHERE b.book_name = ?
             """;
+    private static final String SAVE_NEW_BOOK = """
+            INSERT INTO books (book_name, page_count, chapter_count, book_image, book_part, year_of_release, publishing_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """;
+    private static final String SET_TO_MANY_TO_MANY = """
+            INSERT INTO books_authors (book_id, author_id)
+            VALUES (?, ?)
+            """;
 
+
+    @SneakyThrows
+    public Book saveWithAuthorId(Book entity, Long id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement1 = null;
+
+        try {
+            connection = ConnectionManager.get();
+            preparedStatement = connection.prepareStatement(SAVE_NEW_BOOK, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement1 = connection.prepareStatement(SET_TO_MANY_TO_MANY);
+
+            connection.setAutoCommit(false);
+
+            preparedStatement.setObject(1, entity.getBookName());
+            preparedStatement.setObject(2, entity.getPageCount());
+            preparedStatement.setObject(3, entity.getChapterCount());
+            preparedStatement.setObject(4, entity.getBookImage());
+            preparedStatement.setObject(5, entity.getBookPart());
+            preparedStatement.setObject(6, entity.getYearOfRelease());
+            preparedStatement.setObject(7, entity.getPublishingId());
+
+            preparedStatement.executeUpdate();
+
+            var generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                entity.setId(generatedKeys.getLong("id"));
+            }
+
+            preparedStatement1.setObject(1, entity.getId());
+            preparedStatement1.setObject(2, id);
+            preparedStatement1.executeUpdate();
+            connection.commit();
+
+
+            return entity;
+        }catch (Exception e){
+            if (connection != null){
+                connection.rollback();
+            }
+            throw e;
+        }finally {
+            if (connection != null) {
+                connection.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (preparedStatement1 != null) {
+                preparedStatement1.close();
+            }
+        }
+    }
 
     @SneakyThrows
     public Map<Book, String> findBookByName(String name) {

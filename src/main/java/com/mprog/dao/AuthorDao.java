@@ -16,14 +16,38 @@ import java.util.Optional;
 public class AuthorDao implements Dao<Long, Author> {
 
     private static final AuthorDao INSTANCE = new AuthorDao();
+    private static final String FIND_ID_BY_NAME = """
+            SELECT id
+            FROM authors
+            WHERE first_name = ?
+            AND last_name = ?
+            """;
 
-    private AuthorDao(){
+    private AuthorDao() {
     }
 
     private static final String FIND_ALL = """
             SELECT id, first_name, last_name, year_of_birth
             FROM authors
             """;
+
+    @SneakyThrows
+    public Long findAuthorIdByNameAndLastName(String authorFirstName, String authorLastName) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(FIND_ID_BY_NAME)) {
+            preparedStatement.setObject(1, authorFirstName);
+            preparedStatement.setObject(2, authorLastName);
+
+            var resultSet = preparedStatement.executeQuery();
+            Long authorId = null;
+
+            if (resultSet.next()){
+                authorId = resultSet.getObject("id", Long.class);
+            }
+
+            return authorId;
+        }
+    }
 
     @SneakyThrows
     @Override
@@ -33,7 +57,7 @@ public class AuthorDao implements Dao<Long, Author> {
 
             List<Author> authors = new ArrayList<>();
             var resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 authors.add(buildAuthor(resultSet));
             }
             return authors;

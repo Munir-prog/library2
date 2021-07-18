@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 public class Book {
     private long id;
     private String bookName;

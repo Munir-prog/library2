@@ -33,7 +33,29 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             FROM publishing
             WHERE publishing_name = ?
             """;
+    private static final String FIND_ID_BY_NAME = """
+            SELECT id
+            FROM publishing
+            WHERE publishing_name = ?
+            """;
 
+
+    @SneakyThrows
+    public Integer findPublishingIdByName(String name) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(FIND_ID_BY_NAME)) {
+
+            preparedStatement.setObject(1, name);
+            Integer publishingId = null;
+
+            var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                publishingId = resultSet.getInt("id");
+            }
+
+            return publishingId;
+        }
+    }
 
     @SneakyThrows
     public Publishing findPublishingByName(String name) {

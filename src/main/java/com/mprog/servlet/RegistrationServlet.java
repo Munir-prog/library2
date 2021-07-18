@@ -17,8 +17,11 @@ import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
 
+import static com.mprog.util.UrlPath.LOGIN;
+import static com.mprog.util.UrlPath.REGISTRATION;
+
 @MultipartConfig(fileSizeThreshold = 1024 * 1024)
-@WebServlet("/registration")
+@WebServlet(REGISTRATION)
 public class RegistrationServlet extends HttpServlet {
 
     private final UserService userService = UserService.getInstance();
@@ -51,7 +54,7 @@ public class RegistrationServlet extends HttpServlet {
 
         try {
             userService.create(createUserDto);
-            resp.sendRedirect("/login");
+            resp.sendRedirect(LOGIN);
         } catch (ValidationException e){
             req.setAttribute("errors", e.getErrorList());
             doGet(req, resp);

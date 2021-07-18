@@ -1,13 +1,18 @@
 package com.mprog.service;
 
+import com.mprog.dao.AuthorDao;
 import com.mprog.dao.BookDao;
 import com.mprog.dto.BookDto;
+import com.mprog.dto.CreateBookDto;
 import com.mprog.entity.Book;
+import com.mprog.mapper.CreateBookMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.*;
 
@@ -15,8 +20,30 @@ import static java.util.stream.Collectors.*;
 public class BookService {
     private static final BookService INSTANCE = new BookService();
     private final BookDao bookDao = BookDao.getInstance();
+    private final CreateBookMapper createBookMapper = CreateBookMapper.getInstance();
+    private final ImageService imageService = ImageService.getInstance();
+    private final AuthorDao authorDao = AuthorDao.getInstance();
 
-    public List<BookDto> findBookByName(String name){
+    @SneakyThrows
+    public long saveBook(CreateBookDto createBookDto) {
+        //validation
+        //exception
+        var authorFirstName = createBookDto.getAuthorFirstName();
+        var authorLastName = createBookDto.getAuthorLastName();
+        //WHEN DOWNLOADIN FILE IS BEING new.txt
+        var id = authorDao.findAuthorIdByNameAndLastName(authorFirstName, authorLastName);
+        var book = createBookMapper.mapFrom(createBookDto);
+        imageService.upload(book.getBookImage(), createBookDto.getBookImage().getInputStream());
+        imageService.upload(book.getBookPart(), createBookDto.getBookPart().getInputStream());
+        //need open Transaction
+        var save = bookDao.saveWithAuthorId(book, id);
+
+        return save.getId();
+
+    }
+
+
+    public List<BookDto> findBookByName(String name) {
         return bookDao.findBookByName(name)
                 .entrySet()
                 .stream()
@@ -73,7 +100,7 @@ public class BookService {
 //                .map(BookService::buildBookDto)
 //                .collect(toList());
 //    }
-    //
+//
 //    public List<BookDto> findAllWithAuthorName() {
 //        return bookDao.findAllWithAuthorName().entrySet()
 //                .stream()

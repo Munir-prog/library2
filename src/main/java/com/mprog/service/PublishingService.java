@@ -21,6 +21,9 @@ public class PublishingService {
         return publishingDao.findAllName();
     }
 
+    public Integer findIdByName(String name){
+        return publishingDao.findPublishingIdByName(name);
+    }
 
     public PublishingDto findPublishingByName(String name) {
         var publishing = publishingDao.findPublishingByName(name);
