@@ -25,7 +25,7 @@ public class AuthorizationFilter implements Filter {
         }else {
             var prevPage = ((HttpServletRequest) request).getHeader("referer");
             System.out.println(prevPage);
-            ((HttpServletResponse) response).sendRedirect(prevPage != null ? prevPage : LOGIN); // must be start page
+            ((HttpServletResponse) response).sendRedirect(prevPage != null ? prevPage : MAIN); // must be start page
         }
     }
 

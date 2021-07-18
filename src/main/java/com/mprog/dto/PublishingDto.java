@@ -9,5 +9,6 @@ public class PublishingDto {
     Integer id;
     String publishingName;
     String phoneNumber;
+    String website;
     String location;
 }

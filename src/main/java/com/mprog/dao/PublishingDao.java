@@ -28,10 +28,31 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             SELECT publishing_name
             FROM publishing
             """;
+    private static final String FIND_PUBLISHING_BY_NAME = """
+            SELECT id, publishing_name, phone_number, website, city, country
+            FROM publishing
+            WHERE publishing_name = ?
+            """;
 
 
     @SneakyThrows
-    public List<String> findAllName(){
+    public Publishing findPublishingByName(String name) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(FIND_PUBLISHING_BY_NAME)) {
+
+            preparedStatement.setObject(1, name);
+            Publishing publishing = null;
+            var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                publishing = buildPublishing(resultSet);
+            }
+
+            return publishing;
+        }
+    }
+
+    @SneakyThrows
+    public List<String> findAllName() {
         try (var connection = ConnectionManager.get();
              var preparedStatement = connection.prepareStatement(FIND_ALL_NAME)) {
 
@@ -44,6 +65,7 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             return publishingList;
         }
     }
+
     @SneakyThrows
     @Override
     public List<Publishing> findAll() {
@@ -67,6 +89,7 @@ public class PublishingDao implements Dao<Integer, Publishing> {
                 resultSet.getObject("id", Integer.class),
                 resultSet.getObject("publishing_name", String.class),
                 resultSet.getObject("phone_number", String.class),
+                resultSet.getObject("website", String.class),
                 resultSet.getObject("city", String.class),
                 resultSet.getObject("country", String.class)
         );

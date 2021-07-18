@@ -15,16 +15,12 @@
     </style>
 </head>
 <body>
-<h1>Publishing Houses:</h1>
-<c:if test="${not empty requestScope.publishing}">
+<c:if test="${not empty requestScope.publishingHouse}">
+    <span>${requestScope.publishingHouse.publishingName}</span><br>
+    <span>${requestScope.publishingHouse.location}</span><br>
+    <span>${requestScope.publishingHouse.phoneNumber}</span><br>
+    <span><a href="${requestScope.publishingHouse.website}">Go to website</a></span><br>
 
-    <ul>
-        <c:forEach var="name" items="${requestScope.publishing}">
-            <li>
-                <a href="${pageContext.request.contextPath}/publishing?publishingName=${name}">${name}</a>
-            </li>
-        </c:forEach>
-    </ul>
 </c:if>
 
 <%@include file="footer.jsp"%>

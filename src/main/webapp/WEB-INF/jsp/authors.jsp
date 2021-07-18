@@ -15,7 +15,7 @@
     <c:forEach var="author" items="${requestScope.authors}">
         <li>
             <a href="${pageContext.request.contextPath}/books?bookId=${author.id}&fullName=${author.fullName}">
-                    ${author.fullName}
+                    ${author.fullName}'s books
             </a>
         </li>
     </c:forEach>

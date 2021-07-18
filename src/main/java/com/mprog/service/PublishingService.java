@@ -2,6 +2,7 @@ package com.mprog.service;
 
 import com.mprog.dao.PublishingDao;
 import com.mprog.dto.PublishingDto;
+import com.mprog.entity.Publishing;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,18 +22,16 @@ public class PublishingService {
     }
 
 
-//    public List<PublishingDto> findAll() {
-//        return publishingDao.findAll()
-//                .stream()
-//                .map(publishing -> PublishingDto.builder()
-//                        .id(publishing.getId())
-//                        .publishingName(publishing.getPublishingName())
-//                        .phoneNumber(publishing.getPhoneNumber())
-//                        .location(publishing.getCountry() + ", " + publishing.getCity())
-//                        .build()
-//                )
-//                .collect(toList());
-//    }
+    public PublishingDto findPublishingByName(String name) {
+        var publishing = publishingDao.findPublishingByName(name);
+        return PublishingDto.builder()
+                .id(publishing.getId())
+                .publishingName(publishing.getPublishingName())
+                .phoneNumber(publishing.getPhoneNumber())
+                .website(publishing.getWebsite())
+                .location(publishing.getCountry() + ", " + publishing.getCity())
+                .build();
+    }
 
 
     public static PublishingService getInstance() {

@@ -19,8 +19,15 @@ public class PublishingServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("publishing", publishingService.findAllName());
-        req.getRequestDispatcher(JspHelper.getPath("publishing"))
-                .forward(req, resp);
+        var publishingName = req.getParameter("publishingName");
+        if (publishingName == null) {
+            req.setAttribute("publishing", publishingService.findAllName());
+            req.getRequestDispatcher(JspHelper.getPath("publishing"))
+                    .forward(req, resp);
+        }else {
+            req.setAttribute("publishingHouse", publishingService.findPublishingByName(publishingName));
+            req.getRequestDispatcher(JspHelper.getPath("publishingPage"))
+                    .forward(req, resp);
+        }
     }
 }
