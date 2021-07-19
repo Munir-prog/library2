@@ -15,4 +15,5 @@ public class UrlPath {
     public static final String ADD = "/add";
     public static final String PUBLISHING = "/publishing";
     public static final String BOOK_PAGE = "/bookPage";
+    public static final String DELETE_BOOK = "/delete";
 }

@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Adding Book</title>
     <style>
         <%@include file="/css/style.css" %>
     </style>

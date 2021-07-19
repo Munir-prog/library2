@@ -28,6 +28,10 @@ public class BookService {
     private final AuthorDao authorDao = AuthorDao.getInstance();
     private final CreateBookValidator createBookValidator = CreateBookValidator.getInstance();
 
+    public void deleteBook(CreateBookDto createBookDto) {
+        bookDao.delete(createBookDto);
+    }
+
     @SneakyThrows
     public long saveBook(CreateBookDto createBookDto) {
 
@@ -37,7 +41,7 @@ public class BookService {
         }
         var authorFirstName = createBookDto.getAuthorFirstName();
         var authorLastName = createBookDto.getAuthorLastName();
-        //WHEN DOWNLOADING FILE IS BEING new.txt
+
         var id = authorDao.findAuthorIdByNameAndLastName(authorFirstName, authorLastName);
         var book = createBookMapper.mapFrom(createBookDto);
         imageService.upload(book.getBookImage(), createBookDto.getBookImage().getInputStream());
@@ -85,34 +89,6 @@ public class BookService {
 
     public static BookService getInstance() {
         return INSTANCE;
+
     }
 }
-
-//    private static BookDto buildBookDto(Book book) {
-//        return BookDto.builder()
-//                .id(book.getId())
-//                .bookName(book.getBookName())
-//                .bookDescription(
-//                        """
-//                                <br>
-//                                Pages:           %s<br>
-//                                Chapters:        %s<br>
-//                                Year of release: %s<br>
-//                                """.formatted(book.getPageCount(), book.getChapterCount(), book.getYearOfRelease()))
-//                .publishingId(book.getPublishingId())
-//                .build();
-//    }
-//    public List<BookDto> findAllByAuthorId(Long id) {
-//        return bookDao.findAllByAuthorId(id)
-//                .stream()
-//                .map(BookService::buildBookDto)
-//                .collect(toList());
-//    }
-//
-//    public List<BookDto> findAllWithAuthorName() {
-//        return bookDao.findAllWithAuthorName().entrySet()
-//                .stream()
-//                .map(entry -> buildBookDtoWithAuthorName(entry.getKey(), entry.getValue()))
-//                .collect(toList());
-//    }
-

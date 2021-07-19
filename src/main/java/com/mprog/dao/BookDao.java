@@ -1,7 +1,10 @@
 package com.mprog.dao;
 
+import com.mprog.dto.CreateBookDto;
 import com.mprog.entity.Book;
+import com.mprog.exception.ValidationException;
 import com.mprog.util.ConnectionManager;
+import com.mprog.validator.Error;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -91,12 +94,12 @@ public class BookDao implements Dao<Long, Book> {
 
 
             return entity;
-        }catch (Exception e){
-            if (connection != null){
+        } catch (Exception e) {
+            if (connection != null) {
                 connection.rollback();
             }
             throw e;
-        }finally {
+        } finally {
             if (connection != null) {
                 connection.close();
             }
@@ -187,6 +190,63 @@ public class BookDao implements Dao<Long, Book> {
                 bookMap.put(bookBuilder(resultSet), buildFullName(resultSet));
             }
             return bookMap;
+        }
+    }
+
+    @SneakyThrows
+    public Long findId(CreateBookDto book) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement("SELECT id FROM books WHERE book_name = ?")) {
+
+            preparedStatement.setObject(1, book.getBookName());
+            var resultSet = preparedStatement.executeQuery();
+            Long id = null;
+            if (resultSet.next()){
+                id = resultSet.getObject("id", Long.class);
+            }
+            return id;
+        }
+    }
+
+    @SneakyThrows
+    public boolean delete(CreateBookDto book) {
+        var bookId = INSTANCE.findId(book);
+        if (bookId == null){
+            throw new ValidationException(List.of(Error.of("bookId.null", "There isn't such book")));
+        }
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement1 = null;
+        try {
+            connection = ConnectionManager.get();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("DELETE FROM books WHERE id = ?");
+            preparedStatement1 = connection.prepareStatement("DELETE FROM books_authors WHERE book_id = ?");
+
+            preparedStatement1.setObject(1, bookId);
+            preparedStatement1.executeUpdate();
+
+            preparedStatement.setObject(1, bookId);
+            preparedStatement.executeUpdate();
+
+
+            connection.commit();
+            return false;
+        }catch (Exception e){
+            if (connection != null) {
+                connection.rollback();
+            }
+            throw e;
+        }finally { //CHECK DMDEV"S VIDEO ABOUT AUTO CLOSING
+            if (connection != null){
+                connection.close();
+            }
+            if (preparedStatement != null){
+                preparedStatement.close();
+            }
+            if (preparedStatement1 != null){
+                preparedStatement1.close();
+            }
         }
     }
 
