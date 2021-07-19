@@ -47,8 +47,9 @@ public class AddBookServlet extends HttpServlet {
         try {
             bookService.saveBook(createBookDto);
             resp.sendRedirect(PROFILE);
-        }catch (Exception e){
-            throw new RuntimeException(e);
+        } catch (ValidationException e){
+            req.setAttribute("errors", e.getErrorList());
+            doGet(req, resp);
         }
     }
 

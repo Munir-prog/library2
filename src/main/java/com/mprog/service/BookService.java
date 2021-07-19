@@ -5,7 +5,10 @@ import com.mprog.dao.BookDao;
 import com.mprog.dto.BookDto;
 import com.mprog.dto.CreateBookDto;
 import com.mprog.entity.Book;
+import com.mprog.exception.ValidationException;
 import com.mprog.mapper.CreateBookMapper;
+import com.mprog.validator.CreateBookValidator;
+import com.mprog.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,19 +26,24 @@ public class BookService {
     private final CreateBookMapper createBookMapper = CreateBookMapper.getInstance();
     private final ImageService imageService = ImageService.getInstance();
     private final AuthorDao authorDao = AuthorDao.getInstance();
+    private final CreateBookValidator createBookValidator = CreateBookValidator.getInstance();
 
     @SneakyThrows
     public long saveBook(CreateBookDto createBookDto) {
-        //validation
-        //exception
+
+        var validationResult = createBookValidator.isValid(createBookDto);
+        if (!validationResult.isValid()){
+            throw new ValidationException(validationResult.getErrors());
+        }
         var authorFirstName = createBookDto.getAuthorFirstName();
         var authorLastName = createBookDto.getAuthorLastName();
-        //WHEN DOWNLOADIN FILE IS BEING new.txt
+        //WHEN DOWNLOADING FILE IS BEING new.txt
         var id = authorDao.findAuthorIdByNameAndLastName(authorFirstName, authorLastName);
         var book = createBookMapper.mapFrom(createBookDto);
         imageService.upload(book.getBookImage(), createBookDto.getBookImage().getInputStream());
         imageService.upload(book.getBookPart(), createBookDto.getBookPart().getInputStream());
-        //need open Transaction
+
+        //opened Transaction
         var save = bookDao.saveWithAuthorId(book, id);
 
         return save.getId();

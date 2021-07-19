@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: munir
@@ -18,36 +19,42 @@
     If you don't know, go to book or publishing pages and see.</p>
     <form action="${pageContext.request.contextPath}/add" method="post" enctype="multipart/form-data">
         <label for="bookNameId">Book name:
-            <input type="text" name="bookName" id="bookNameId">
+            <input type="text" name="bookName" id="bookNameId" required>
         </label><br>
         <label for="pageCountId">Page count:
-            <input type="number" name="pageCount" id="pageCountId">
+            <input type="number" name="pageCount" id="pageCountId" required>
         </label><br>
         <label for="chapterCountId">Chapter count:
-            <input type="number" name="chapterCount" id="chapterCountId">
+            <input type="number" name="chapterCount" id="chapterCountId" required>
         </label><br>
         <label for="bookImageId">Book image:
-            <input type="file" name="bookImage" id="bookImageId">
+            <input type="file" name="bookImage" id="bookImageId" required>
         </label><br>
         <label for="bookPartId">Book part:
-            <input type="file" name="bookPart" id="bookPartId">
+            <input type="file" name="bookPart" id="bookPartId" required>
         </label><br>
         <label for="yearOfReleaseId">Year of release:
-            <input type="number" name="yearOfRelease" id="yearOfReleaseId">
+            <input type="number" name="yearOfRelease" id="yearOfReleaseId" required>
         </label><br>
         <label for="authorFirstNameId">Author first name:
-            <input type="text" name="authorFirstName" id="authorFirstNameId">
+            <input type="text" name="authorFirstName" id="authorFirstNameId" required>
         </label><br>
         <label for="authorLastNameId">Author last name:
-            <input type="text" name="authorLastName" id="authorLastNameId">
+            <input type="text" name="authorLastName" id="authorLastNameId" required>
         </label><br>
         <label for="publishingNameId">Publishing name:
-            <input type="text" name="publishingName" id="publishingNameId">
+            <input type="text" name="publishingName" id="publishingNameId" required>
         </label><br>
         <button type="submit">Send</button>
 
 
     </form>
+
+    <c:if test="${not empty requestScope.errors}">
+        <c:forEach var="error" items="${requestScope.errors}">
+            <span class="errorMessageForAddingBook">${error.message}</span><br>
+        </c:forEach>
+    </c:if>
     <%@include file="footer.jsp"%>
 
 </body>
