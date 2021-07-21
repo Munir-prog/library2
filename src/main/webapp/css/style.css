@@ -152,7 +152,7 @@ body {
     font-size: 16px;
 }
 
-.errorMessageForAddingBook{
+.error{
     color: red;
 }
 

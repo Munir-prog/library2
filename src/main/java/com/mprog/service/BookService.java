@@ -8,16 +8,12 @@ import com.mprog.entity.Book;
 import com.mprog.exception.ValidationException;
 import com.mprog.mapper.CreateBookMapper;
 import com.mprog.validator.CreateBookValidator;
-import com.mprog.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookService {
@@ -55,13 +51,15 @@ public class BookService {
     }
 
 
-    public List<BookDto> findBookByName(String name) {
+    public Optional<BookDto> findBookByName(String name) {
         return bookDao.findBookByName(name)
                 .entrySet()
                 .stream()
                 .map(entry -> buildBookDtoWithAuthorName(entry.getKey(), entry.getValue()))
-                .collect(toList());
+                .findFirst();
+
     }
+
 
     public List<String> findAllNameOfBooks() {
         return bookDao.findAllNameOfBooks();

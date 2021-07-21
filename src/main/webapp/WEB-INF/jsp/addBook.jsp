@@ -52,7 +52,7 @@
 
     <c:if test="${not empty requestScope.errors}">
         <c:forEach var="error" items="${requestScope.errors}">
-            <span class="errorMessageForAddingBook">${error.message}</span><br>
+            <span class="error">${error.message}</span><br>
         </c:forEach>
     </c:if>
     <%@include file="footer.jsp"%>

@@ -212,7 +212,7 @@ public class BookDao implements Dao<Long, Book> {
     public boolean delete(CreateBookDto book) {
         var bookId = INSTANCE.findId(book);
         if (bookId == null){
-            throw new ValidationException(List.of(Error.of("bookId.null", "There isn't such book")));
+            throw new ValidationException(List.of(Error.of("bookId.null", "There isn't such book!")));
         }
         Connection connection = null;
         PreparedStatement preparedStatement = null;
