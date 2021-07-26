@@ -17,7 +17,7 @@
 <body>
     <p>Add book on this form if you know the author name and publishing name!!!<br>
     If you don't know, go to book or publishing pages and see.</p>
-    <form action="${pageContext.request.contextPath}/add" method="post" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/addBook" method="post" enctype="multipart/form-data">
         <label for="bookNameId">Book name:
             <input type="text" name="bookName" id="bookNameId" required>
         </label><br>

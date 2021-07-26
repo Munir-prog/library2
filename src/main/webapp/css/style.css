@@ -156,6 +156,11 @@ body {
     color: red;
 }
 
+.gender {
+    text-transform: capitalize;
+    color: red;
+}
+
 
 
 .d22 {

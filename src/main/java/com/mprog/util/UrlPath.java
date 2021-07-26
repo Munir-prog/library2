@@ -12,8 +12,9 @@ public class UrlPath {
     public static final String AUTHORS = "/authors";
     public static final String BOOKS = "/books";
     public static final String PROFILE = "/profile";
-    public static final String ADD = "/add";
+    public static final String ADD_BOOK = "/addBook";
     public static final String PUBLISHING = "/publishing";
     public static final String BOOK_PAGE = "/bookPage";
     public static final String DELETE_BOOK = "/delete";
+    public static final String ADD_AUTHOR = "/addAuthor";
 }

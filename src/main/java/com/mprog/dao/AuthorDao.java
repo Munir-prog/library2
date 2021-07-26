@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,10 @@ public class AuthorDao implements Dao<Long, Author> {
             WHERE first_name = ?
             AND last_name = ?
             """;
+    private static final String SAVE_AUTHOR_SQL = """
+            INSERT INTO authors (first_name, last_name, year_of_birth) 
+            VALUES (?, ?, ?)
+            """;
 
     private AuthorDao() {
     }
@@ -30,6 +35,24 @@ public class AuthorDao implements Dao<Long, Author> {
             SELECT id, first_name, last_name, year_of_birth
             FROM authors
             """;
+
+    @SneakyThrows
+    @Override
+    public Author save(Author entity) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(SAVE_AUTHOR_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setObject(1, entity.getFirstName());
+            preparedStatement.setObject(2, entity.getLastName());
+            preparedStatement.setObject(3, entity.getYearOfBirth());
+
+            preparedStatement.executeUpdate();
+            var generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()){
+                entity.setId(generatedKeys.getLong("id"));
+            }
+            return entity;
+        }
+    }
 
     @SneakyThrows
     public Long findAuthorIdByNameAndLastName(String authorFirstName, String authorLastName) {
@@ -41,7 +64,7 @@ public class AuthorDao implements Dao<Long, Author> {
             var resultSet = preparedStatement.executeQuery();
             Long authorId = null;
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 authorId = resultSet.getObject("id", Long.class);
             }
 
@@ -77,11 +100,6 @@ public class AuthorDao implements Dao<Long, Author> {
     @Override
     public void update(Author entity) {
 
-    }
-
-    @Override
-    public Author save(Author entity) {
-        return null;
     }
 
     @SneakyThrows

@@ -41,7 +41,7 @@
 
     </select><br>
     <c:forEach var="gender" items="${requestScope.gender}">
-        <input type="radio" name="gender" value="${gender}"> Male
+        <input type="radio" name="gender" value="${gender}">${gender}
         <br>
     </c:forEach>
 

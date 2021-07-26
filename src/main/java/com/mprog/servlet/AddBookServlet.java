@@ -14,11 +14,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static com.mprog.util.UrlPath.ADD;
-import static com.mprog.util.UrlPath.PROFILE;
+import static com.mprog.util.UrlPath.*;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024)
-@WebServlet(ADD)
+@WebServlet(ADD_BOOK)
 public class AddBookServlet extends HttpServlet {
 
     private final BookService bookService = BookService.getInstance();

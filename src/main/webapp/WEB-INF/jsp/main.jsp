@@ -31,14 +31,14 @@
 
 </div>
 <%--<div class="img" style="background-image: url('/lib.jpg')">--%>
-<div class="figure">
-    <div class="d22">
-    </div>
-    <div class="d23">
-    </div>
-    <div class="d21">
-    </div>
-</div>
+<%--<div class="figure">--%>
+<%--    <div class="d22">--%>
+<%--    </div>--%>
+<%--    <div class="d23">--%>
+<%--    </div>--%>
+<%--    <div class="d21">--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <%@include file="footer.jsp"%>
 </body>
