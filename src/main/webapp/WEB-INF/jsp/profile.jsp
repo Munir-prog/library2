@@ -27,8 +27,10 @@
         <a href="${pageContext.request.contextPath}/books">Books</a>
         <a href="${pageContext.request.contextPath}/publishing">Publishing</a>
         <a href="${pageContext.request.contextPath}/addBook">Add book</a>
-        <a href="${pageContext.request.contextPath}/delete">Delete book</a>
-        <a href="/addAuthor">Add author</a>
+        <a href="${pageContext.request.contextPath}/deleteBook">Delete book</a>
+        <a href="${pageContext.request.contextPath}/addAuthor">Add author</a>
+        <a href="${pageContext.request.contextPath}/deleteAuthor">Delete author</a>
+
     </div>
 </div>
 

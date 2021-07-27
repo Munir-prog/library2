@@ -1,9 +1,12 @@
 package com.mprog.dao;
 
 import com.mprog.entity.Author;
+import com.mprog.exception.PSQLExceptionWrapper;
+import com.mprog.exception.SomeThingWentWrongWhenDeletingAuthorException;
 import com.mprog.util.ConnectionManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +30,11 @@ public class AuthorDao implements Dao<Long, Author> {
             INSERT INTO authors (first_name, last_name, year_of_birth) 
             VALUES (?, ?, ?)
             """;
+    private static final String DELETE_BY_NAME_SQL = """
+            DELETE FROM authors
+            WHERE first_name = ?
+            AND last_name = ?
+            """;
 
     private AuthorDao() {
     }
@@ -35,6 +43,28 @@ public class AuthorDao implements Dao<Long, Author> {
             SELECT id, first_name, last_name, year_of_birth
             FROM authors
             """;
+
+    @SneakyThrows
+    public /*No*/ void deleteByNameAndSurname(String firstName, String lastName) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(DELETE_BY_NAME_SQL)) {
+            preparedStatement.setObject(1, firstName);
+            preparedStatement.setObject(2, lastName);
+
+
+            try {
+                var i = preparedStatement.executeUpdate();
+                if (i == 0) {
+                    throw new SomeThingWentWrongWhenDeletingAuthorException();
+                }
+            }catch (PSQLException e){
+                var message = e.getMessage();
+                throw new PSQLExceptionWrapper(message);
+            }
+
+        }
+    }
+
 
     @SneakyThrows
     @Override
@@ -47,7 +77,7 @@ public class AuthorDao implements Dao<Long, Author> {
 
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()){
+            if (generatedKeys.next()) {
                 entity.setId(generatedKeys.getLong("id"));
             }
             return entity;

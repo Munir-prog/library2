@@ -220,8 +220,8 @@ public class BookDao implements Dao<Long, Book> {
         try {
             connection = ConnectionManager.get();
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement("DELETE FROM books WHERE id = ?");
             preparedStatement1 = connection.prepareStatement("DELETE FROM books_authors WHERE book_id = ?");
+            preparedStatement = connection.prepareStatement("DELETE FROM books WHERE id = ?");
 
             preparedStatement1.setObject(1, bookId);
             preparedStatement1.executeUpdate();

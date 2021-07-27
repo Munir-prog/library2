@@ -16,17 +16,20 @@
 
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/deleteBook" method="post">
-    <label for="bookNameId">Book name:
-        <input type="text" name="bookName" id="bookNameId">
+<form action="${pageContext.request.contextPath}/deleteAuthor" method="post">
+    <label for="firstNameId">Author name:
+        <input type="text" name="firstName" id="firstNameId">
+    </label><br>
+    <label for="lastNameId">Author surname:
+        <input type="text" name="lastName" id="lastNameId">
     </label><br>
     <button type="submit">Delete</button>
 </form>
 
-<c:if test="${not empty requestScope.errors}">
-    <c:forEach var="error" items="${requestScope.errors}">
-        <span class="error">${error.message}</span><br>
-    </c:forEach>
+<c:if test="${not empty requestScope.errorMessage}">
+<%--    <c:forEach var="error" items="${requestScope.errors}">--%>
+        <span class="error">${requestScope.errorMessage}</span><br>
+<%--    </c:forEach>--%>
 </c:if>
 <%@include file="footer.jsp"%>
 </body>

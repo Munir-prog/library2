@@ -25,6 +25,12 @@ public class AuthorService {
     private final CreateAuthorMapper createAuthorMapper = CreateAuthorMapper.getInstance();
     private final CreateAuthorValidator createAuthorValidator = CreateAuthorValidator.getInstance();
 
+    public /*no know*/void delete(CreateAuthorDto authorDto){
+        var firstName = authorDto.getFirstName();
+        var lastName = authorDto.getLastName();
+        authorDao.deleteByNameAndSurname(firstName, lastName);
+    }
+
     public Author save(CreateAuthorDto authorDto){
         var validationResult = createAuthorValidator.isValid(authorDto);
         if (!validationResult.isValid()){
