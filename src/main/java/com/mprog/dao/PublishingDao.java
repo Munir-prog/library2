@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,33 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             FROM publishing
             WHERE publishing_name = ?
             """;
+    private static final String SAVE_PUBLISHING_SQL = """
+            INSERT INTO publishing (publishing_name, phone_number, website, city, country) 
+            VALUES (?, ?, ?, ?, ?)
+            """;
 
+
+    @SneakyThrows
+    @Override
+    public Publishing save(Publishing entity) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(SAVE_PUBLISHING_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setObject(1, entity.getPublishingName());
+            preparedStatement.setObject(2, entity.getPhoneNumber());
+            preparedStatement.setObject(3, entity.getWebsite());
+            preparedStatement.setObject(4, entity.getCity());
+            preparedStatement.setObject(5, entity.getCountry());
+
+            preparedStatement.executeUpdate();
+
+            var generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()){
+                entity.setId(generatedKeys.getObject("id", Integer.class));
+            }
+
+            return entity;
+        }
+    }
 
     @SneakyThrows
     public Integer findPublishingIdByName(String name) {
@@ -132,10 +159,6 @@ public class PublishingDao implements Dao<Integer, Publishing> {
 
     }
 
-    @Override
-    public Publishing save(Publishing entity) {
-        return null;
-    }
 
     public static PublishingDao getInstance() {
         return INSTANCE;

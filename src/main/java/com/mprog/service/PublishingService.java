@@ -3,18 +3,19 @@ package com.mprog.service;
 import com.mprog.dao.PublishingDao;
 import com.mprog.dto.PublishingDto;
 import com.mprog.entity.Publishing;
+import com.mprog.exception.ValidationException;
+import com.mprog.validator.CreatePublishingValidator;
+import com.mprog.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PublishingService {
     private static final PublishingService INSTANCE = new PublishingService();
     private final PublishingDao publishingDao = PublishingDao.getInstance();
+    private final CreatePublishingValidator createPublishingValidator = CreatePublishingValidator.getINSTANCE();
 
 
     public List<String> findAllName() {
@@ -44,5 +45,14 @@ public class PublishingService {
 
     public static PublishingService getInstance() {
         return INSTANCE;
+    }
+
+    public void save(Publishing country) {
+        //validation
+        var valid = createPublishingValidator.isValid(country);
+        if (!valid.isValid()){
+            throw new ValidationException(valid.getErrors());
+        }
+        publishingDao.save(country);
     }
 }

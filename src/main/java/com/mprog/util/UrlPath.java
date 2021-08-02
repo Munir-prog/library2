@@ -18,4 +18,5 @@ public class UrlPath {
     public static final String DELETE_BOOK = "/deleteBook";
     public static final String ADD_AUTHOR = "/addAuthor";
     public static final String DELETE_AUTHOR = "/deleteAuthor";
+    public static final String ADD_PUBLISHING = "/addPublishing";
 }

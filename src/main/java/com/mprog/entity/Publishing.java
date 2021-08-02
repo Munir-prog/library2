@@ -4,9 +4,10 @@ import lombok.*;
 
 @AllArgsConstructor
 @Getter
-@Setter
 @EqualsAndHashCode
 @ToString
+@Builder
+@Setter
 public class Publishing {
     private Integer id;
     private String publishingName;
