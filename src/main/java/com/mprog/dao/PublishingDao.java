@@ -1,11 +1,13 @@
 package com.mprog.dao;
 
 import com.mprog.entity.Publishing;
+import com.mprog.exception.PSQLExceptionWrapper;
 import com.mprog.util.ConnectionManager;
 import jakarta.servlet.annotation.WebServlet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,6 +45,10 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             INSERT INTO publishing (publishing_name, phone_number, website, city, country) 
             VALUES (?, ?, ?, ?, ?)
             """;
+    private static final String DELETE_BY_NAME_SQL = """
+            DELETE FROM publishing
+            WHERE publishing_name = ?
+            """;
 
 
     @SneakyThrows
@@ -59,7 +65,7 @@ public class PublishingDao implements Dao<Integer, Publishing> {
             preparedStatement.executeUpdate();
 
             var generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()){
+            if (generatedKeys.next()) {
                 entity.setId(generatedKeys.getObject("id", Integer.class));
             }
 
@@ -151,6 +157,19 @@ public class PublishingDao implements Dao<Integer, Publishing> {
 
     @Override
     public boolean delete(Integer id) {
+        return false;
+    }
+
+    @SneakyThrows
+    public boolean deleteByName(String name) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(DELETE_BY_NAME_SQL)) {
+            preparedStatement.setObject(1, name);
+            preparedStatement.executeUpdate();
+        }catch (PSQLException e){
+            var message = e.getMessage();
+            throw new PSQLExceptionWrapper(message);
+        }
         return false;
     }
 

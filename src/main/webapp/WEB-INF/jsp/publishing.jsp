@@ -22,9 +22,18 @@
         <c:forEach var="name" items="${requestScope.publishing}">
             <li>
                 <a href="${pageContext.request.contextPath}/publishing?publishingName=${name}">${name}</a>
+                <form action="${pageContext.request.contextPath}/deletePublishing" method="post">
+                    <input type="text" name="publishingName" value="${name}" hidden>
+                    <button>Delete</button>
+                </form>
             </li>
+
         </c:forEach>
     </ul>
+</c:if>
+
+<c:if test="${not empty requestScope.errors}">
+        <span class="error">${requestScope.errors}</span><br>
 </c:if>
 
 <%@include file="footer.jsp"%>

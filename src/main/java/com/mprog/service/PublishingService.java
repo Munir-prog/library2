@@ -55,4 +55,8 @@ public class PublishingService {
         }
         publishingDao.save(country);
     }
+
+    public void deletePublishing(String publishingName) {
+        publishingDao.deleteByName(publishingName);
+    }
 }
